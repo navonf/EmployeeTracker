@@ -1,5 +1,5 @@
 # EmployeeTracker
-POOS Term Project
+POOS Term Project.
 
 ## Project 8: Employee tracker
 
