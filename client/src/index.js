@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import Login from './components/Login';
 import registerServiceWorker from './registerServiceWorker';
 
 
-ReactDOM.render(<App />, document.querySelector('.container'));
+ReactDOM.render(<Login />, document.querySelector('.container'));
 registerServiceWorker();

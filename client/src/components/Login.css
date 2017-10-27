@@ -1,13 +1,13 @@
-.App {
+.Login {
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
+.Login-logo {
+  animation: Login-logo-spin infinite 20s linear;
   height: 80px;
 }
 
-.App-header {
+.Login-header {
   background-color: #222;
   height: 12em;
   padding: 2em;
@@ -16,11 +16,11 @@
 
 }
 
-.App-title {
-  font-size: 5em;
+.Login-title {
+  padding-right: em;
 }
 
-.App-intro {
+.Login-intro {
   font-size: large;
 }
 
