@@ -3,8 +3,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import Subheader from 'material-ui/Subheader';
-
+import fire from './../fire';
 
 import './Login.css';
 
@@ -25,8 +24,8 @@ class Login extends Component {
         <MuiThemeProvider>
           <div>
           <AppBar
-              title="Employee Tracker"
-              titleStyle={{textAlign: "center"}}
+            title="Employee Tracker"
+            titleStyle={{textAlign: "center"}}
             />
           <TextField
              hintText="Enter your Username"
@@ -42,6 +41,9 @@ class Login extends Component {
                />
              <br/>
              <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleClick(event)}/>
+         </div>
+         <div>
+
          </div>
          </MuiThemeProvider>
       </div>
