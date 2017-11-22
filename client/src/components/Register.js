@@ -6,6 +6,7 @@ import TextField from 'material-ui/TextField';
 import fire from './../fire';
 
 
+
 import './Login.css';
 
 class Register extends Component {
@@ -14,22 +15,34 @@ class Register extends Component {
 
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      success: false,
+      emptyForm: false
     }
   }
 
   handleRegister(e) {
-    e.preventDefault();
-    const usersRef = fire.database().ref('users');
-    const user = {
-      user: this.state.username,
-      password: this.state.password
+    if(this.state.username === '' || this.state.password === '') {
+      this.setState({emptyForm : true});
     }
-    usersRef.push(user);
-    this.setState({
-      username: '',
-      password: ''
-    });
+    else {
+      e.preventDefault();
+
+      // update the database
+      const usersRef = fire.database().ref('users');
+      const user = {
+        user: this.state.username,
+        password: this.state.password
+      }
+      usersRef.push(user);
+      this.setState({
+        username: '',
+        password: ''
+      });
+      // give the success message
+      this.setState({emptyForm : false});
+      this.setState({success : true});
+    }
   }
 
   render() {
@@ -61,7 +74,8 @@ class Register extends Component {
              <br/>
              <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleRegister(event)}/>
          </div>
-
+            {this.state.success ? <h1> yoyo, you did it. login pls </h1>: null}
+            {this.state.emptyForm ? <h1> Please fill out all fields </h1>: null}
          </MuiThemeProvider>
       </div>
       </center>
