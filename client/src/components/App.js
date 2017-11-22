@@ -36,7 +36,7 @@ class App extends Component {
         <MuiThemeProvider>
           <center>
           <AppBar
-            title="Welcome to your Employee Tracker!"
+            title="Employee Tracker"
             titleStyle={{textAlign: "center"}}
             showMenuIconButton={false}
             />

@@ -18,6 +18,19 @@ class Register extends Component {
     }
   }
 
+  handleRegister(e) {
+    e.preventDefault();
+    const usersRef = fire.database().ref('users');
+    const user = {
+      user: this.state.username,
+      password: this.state.password
+    }
+    usersRef.push(user);
+    this.setState({
+      username: '',
+      password: ''
+    });
+  }
 
   render() {
     return (
@@ -46,7 +59,7 @@ class Register extends Component {
                />
 
              <br/>
-             <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleClick(event)}/>
+             <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleRegister(event)}/>
          </div>
 
          </MuiThemeProvider>
