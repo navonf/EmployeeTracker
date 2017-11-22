@@ -32,3 +32,9 @@
 .List-elem {
   padding-top: 1em;
 }
+
+.divider{
+  width:10px;
+  height:auto;
+  display:inline-block;
+}
