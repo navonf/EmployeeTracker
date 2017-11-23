@@ -22,7 +22,6 @@ class Login extends Component {
   handleLogin(e) {
     e.preventDefault();
     const usersRef = fire.database().ref('users');
-    var user = this.state.username;
     usersRef
       .on('child_added', (snapshot) => {
       if(snapshot.val().user === this.state.username && snapshot.val().password === this.state.password) {
@@ -31,13 +30,13 @@ class Login extends Component {
         console.log("this is your username:" + snapshot.val().user);
 
         var succ = this.state.success ? false : true;
+        var fail = this.state.failed ? true : false;
         this.setState({success : succ});
-        this.setState({failed : false});
+        this.setState({failed : fail});
       }
-      else{ // login fails
+      else { // login fails
         var fail = this.state.failed ? false : true;
         this.setState({failed : fail});
-        this.setState({success : false});
       }
     });
   }
