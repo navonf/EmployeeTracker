@@ -14,7 +14,8 @@ class App extends Component {
     this.state = {
       showLogin: false,
       showRegister: false,
-      startButtons: true
+      startButtons: true,
+      success: false
     }
   }
 
@@ -36,9 +37,8 @@ class App extends Component {
         <MuiThemeProvider>
           <center>
           <AppBar
-            title="Employee Tracker"
+            title="Employee Tracker : Admin View"
             titleStyle={{textAlign: "center"}}
-            showMenuIconButton={false}
             />
           {this.state.startButtons ?
             <div> <br /> <br />

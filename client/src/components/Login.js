@@ -13,8 +13,8 @@ class Login extends Component {
     this.state = {
       username: '',
       password: '',
-      success: false,
-      failed: false
+      failed: false,
+      clientName: ''
     }
   }
 
@@ -22,7 +22,6 @@ class Login extends Component {
   handleLogin(e) {
     e.preventDefault();
     const usersRef = fire.database().ref('users');
-    var user = this.state.username;
     usersRef
       .on('child_added', (snapshot) => {
       if(snapshot.val().user === this.state.username && snapshot.val().password === this.state.password) {
@@ -30,14 +29,18 @@ class Login extends Component {
         console.log("this is your password:" + snapshot.val().password);
         console.log("this is your username:" + snapshot.val().user);
 
+        // pull name from db
+        this.setState({clientName : snapshot.val().name});
+
         var succ = this.state.success ? false : true;
+        var fail = this.state.failed ? true : false;
         this.setState({success : succ});
-        this.setState({failed : false});
-      }
-      else{ // login fails
-        var fail = this.state.failed ? false : true;
         this.setState({failed : fail});
-        this.setState({success : false});
+
+      }
+      else { // login fails
+        fail = this.state.failed ? false : true;
+        this.setState({failed : fail});
       }
     });
   }
@@ -64,7 +67,7 @@ class Login extends Component {
              <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleLogin(event)}/>
          </div>
          </MuiThemeProvider>
-         {this.state.success ? <h1> hello {this.state.username}! you are logged in. </h1> : null}
+         {this.state.success ? <h1> hello {this.state.clientName}! you are logged in. </h1> : null}
          {this.state.failed ? <h1> wrong username or password </h1> : null}
       </div>
       </center>

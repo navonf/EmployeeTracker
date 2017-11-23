@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
+import fire from './../fire';
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
+import Checkbox from 'material-ui/Checkbox';
+import Visibility from 'material-ui/svg-icons/action/visibility';
+import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import TextField from 'material-ui/TextField';
-import fire from './../fire';
 
 
 
@@ -16,19 +20,22 @@ class Register extends Component {
       username: '',
       password: '',
       password2: '',
+      name: '',
+      groupNum: 0,
       passwordInvalid: false,
       success: false,
-      emptyForm: false
+      emptyForm: false,
+      isPrivate: false
     }
   }
 
   handleRegister(e) {
-    if(this.state.username === '' || this.state.password === '' || this.state.password2 === '') {
+    if(this.state.username === '' || this.state.password === '' || this.state.password2 === '' || this.state.name === '') {
       this.setState({emptyForm : true});
       this.setState({passwordInvalid: false});
 
     }
-    else if(this.state.password != this.state.password2) {
+    else if(this.state.password !== this.state.password2) {
       this.setState({passwordInvalid: true});
       this.setState({emptyForm : false});
     }
@@ -38,8 +45,11 @@ class Register extends Component {
       // update the database
       const usersRef = fire.database().ref('users');
       const user = {
+        name: this.state.name,
         user: this.state.username,
-        password: this.state.password
+        password: this.state.password,
+        loggedIn: 0,
+        groupNum: this.state.groupNum
       }
 
       usersRef.push(user);
@@ -54,34 +64,66 @@ class Register extends Component {
     }
   }
 
+  handleCheck(e) {
+    var check = this.state.isPrivate ? false : true;
+    this.setState({isPrivate: check});
+  }
+
   render() {
     return (
       <center>
       <div>
         <MuiThemeProvider>
-          <div>
-          <TextField
-             hintText="Enter your Username"
-             floatingLabelText="Username"
-             onChange = {(event,newValue) => this.setState({username:newValue})}
-             />
-           <br/>
-             <TextField
-               type="password"
-               hintText="Enter your Password"
-               floatingLabelText="Password"
-               onChange = {(event,newValue) => this.setState({password:newValue})}
-               />
+          <div className="form">
+            <TextField
+              hintText="Enter your name"
+              floatingLabelText="Name"
+              onChange = {(event,newValue) => this.setState({name:newValue})}
+              />
                <br/>
-             <TextField
-               type="password"
-               hintText="Enter your Password"
-               floatingLabelText="Re-Enter Password"
-               onChange = {(event,newValue) => this.setState({password2:newValue})}
-               />
-
-             <br/>
-             <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleRegister(event)}/>
+            <TextField
+              hintText="Enter your Username"
+              floatingLabelText="Username"
+              onChange = {(event,newValue) => this.setState({username:newValue})}
+              />
+              <br/>
+            <TextField
+              type="password"
+              hintText="Enter your Password"
+              floatingLabelText="Password"
+              onChange = {(event,newValue) => this.setState({password:newValue})}
+              />
+              <br/>
+            <TextField
+              type="password"
+              hintText="Re-Enter your Password"
+              floatingLabelText="Re-Enter Password"
+              onChange = {(event,newValue) => this.setState({password2:newValue})}
+              />
+              <br/>
+              <br/>
+            <Checkbox
+              className="toggle"
+              checkedIcon={<VisibilityOff />}
+              uncheckedIcon={<Visibility />}
+              label="Privacy"
+              labelPosition="left"
+              style={{float: "center", width: "0%"}}
+              onCheck={(event) => this.handleCheck(event)}
+            />
+            <br/>
+            {this.state.isPrivate ?
+            <div>
+              <TextField
+                type="groupNumber"
+                hintText="Enter your Group Number"
+                floatingLabelText="Group Number"
+                onChange = {(event,newValue) => this.setState({groupNum:newValue})}
+                />
+                <br/> <br/>
+            </div> : null
+            }
+            <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleRegister(event)}/>
          </div>
             {this.state.success ? <h1> yoyo, you did it. login pls </h1>: null}
             {this.state.passwordInvalid ? <h1> Passwords do not match! </h1>: null}
@@ -93,8 +135,29 @@ class Register extends Component {
   }
 }
 
-const style = {
 
+const style = {
+  block: {
+      maxWidth: 250,
+    },
+    toggle: {
+      marginBottom: 16,
+    },
+    thumbOff: {
+      backgroundColor: '#ffcccc',
+    },
+    trackOff: {
+      backgroundColor: '#ff9d9d',
+    },
+    thumbSwitched: {
+      backgroundColor: 'red',
+    },
+    trackSwitched: {
+      backgroundColor: '#ff9d9d',
+    },
+    labelStyle: {
+      color: 'red',
+    },
 };
 
 export default Register;
