@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import Login from './Login';
 import Register from './Register';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -14,7 +13,8 @@ class App extends Component {
 
     this.state = {
       showLogin: false,
-      showRegister: false
+      showRegister: false,
+      startButtons: true
     }
   }
 
@@ -30,7 +30,6 @@ class App extends Component {
     this.setState({showLogin : false});
   }
 
-
   render() {
     return (
       <div>
@@ -41,14 +40,15 @@ class App extends Component {
             titleStyle={{textAlign: "center"}}
             showMenuIconButton={false}
             />
-          <br />
-
-            <br />
+          {this.state.startButtons ?
+            <div> <br /> <br />
             <RaisedButton label="Login" primary={true} onClick={this.toggleLogin.bind(this)}
               Login />
-            <div class="divider"></div>
+            <div className="divider"></div>
             <RaisedButton label="Register" primary={true} onClick={this.toggleRegister.bind(this)}
               Register />
+            </div> : null
+          }
           </center>
         </MuiThemeProvider>
 
