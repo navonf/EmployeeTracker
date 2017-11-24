@@ -52,12 +52,6 @@ class Register extends Component {
         groupNum: this.state.groupNum
       }
 
-      const employee = {
-        name: "marc",
-        password: "password"
-      }
-
-      fire.database().ref('employees').push(employee);
 
       usersRef.push(user);
       this.setState({
