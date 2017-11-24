@@ -14,33 +14,40 @@ class Login extends Component {
       username: '',
       password: '',
       failed: false,
-      clientName: ''
+      clientName: '',
+      userKey: ''
     }
   }
 
-  // This function handles login verification
+  // This function handles login
   handleLogin(e) {
     e.preventDefault();
+    const user = this.state.username;
+    const pass = this.state.password;
     const usersRef = fire.database().ref('users');
     usersRef
       .on('child_added', (snapshot) => {
-      if(snapshot.val().user === this.state.username && snapshot.val().password === this.state.password) {
-        console.log("yes!!");
+      if(snapshot.val().user === user && snapshot.val().password === pass) {
+        this.setState({userKey : snapshot.key});
         console.log("this is your password:" + snapshot.val().password);
         console.log("this is your username:" + snapshot.val().user);
+
+
+        // set loggon attribute to 1, indicating user is logged on
+        snapshot.ref.update({loggedIn: 1});
+        this.props.triggerLogInUpdate();
 
         // pull name from db
         this.setState({clientName : snapshot.val().name});
 
-        var succ = this.state.success ? false : true;
-        var fail = this.state.failed ? true : false;
-        this.setState({success : succ});
-        this.setState({failed : fail});
+        this.setState({success : true});
+        this.setState({failed : false});
 
+        const logged = 1;
       }
       else { // login fails
-        fail = this.state.failed ? false : true;
-        this.setState({failed : fail});
+        this.setState({failed : true});
+        this.setState({success : false});
       }
     });
   }
