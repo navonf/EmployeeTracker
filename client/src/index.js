@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
-import MapContainer from './components/MapContainer';
+import Map from './components/Map';
 import registerServiceWorker from './registerServiceWorker';
 
 
 ReactDOM.render(<App />, document.querySelector('.container'));
-ReactDOM.render(<MapContainer />, document.querySelector('.mapcontainer'));
+ReactDOM.render(<Map />, document.querySelector('.mapcontainer'));
 registerServiceWorker();
