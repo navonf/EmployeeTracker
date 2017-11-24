@@ -52,6 +52,13 @@ class Register extends Component {
         groupNum: this.state.groupNum
       }
 
+      const employee = {
+        name: "marc",
+        password: "password"
+      }
+
+      fire.database().ref('employees').push(employee);
+
       usersRef.push(user);
       this.setState({
         username: '',
@@ -116,7 +123,7 @@ class Register extends Component {
             <div>
               <TextField
                 type="groupNumber"
-                hintText="Enter your Group Number"
+                hintText="Enter your private Group Number"
                 floatingLabelText="Group Number"
                 onChange = {(event,newValue) => this.setState({groupNum:newValue})}
                 />

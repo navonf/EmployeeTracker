@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import Login from './Login';
 import Register from './Register';
+import Employees from './Employees';
+
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
-
+import MenuItem from 'material-ui/MenuItem';
+import IconMenu from 'material-ui/IconMenu';
+import IconButton from 'material-ui/IconButton';
+import Drawer from 'material-ui/Drawer';
 
 class App extends Component {
 
@@ -15,8 +21,17 @@ class App extends Component {
       showLogin: false,
       showRegister: false,
       startButtons: true,
-      success: false
+      success: false,
+      drawerOpened: false,
+      showEmployees: false,
+      loggedIn: 0,
+      groupNum: 0,
+      needsToSignIn: false,
+      loggedOut: false
+
     }
+
+    this.updateLogIn = this.updateLogIn.bind(this);
   }
 
   toggleLogin() {
@@ -31,6 +46,48 @@ class App extends Component {
     this.setState({showLogin : false});
   }
 
+  openDrawer() {
+    this.setState({drawerOpened: true});
+
+  }
+
+  goToHome() {
+    this.setState({drawerOpened: false});
+    this.setState({showEmployees: false});
+
+    // our destination
+    this.setState({needsToSignIn: false});
+    this.setState({loggedOut: false});
+
+    this.setState({startButtons: true});
+  }
+
+  goToEmployees() {
+    if(this.state.loggedIn === 1) {
+      this.setState({needsToSignIn: false});
+      this.setState({drawerOpened: false});
+      this.setState({startButtons: false});
+      this.setState({showRegister : false});
+      this.setState({showLogin : false});
+
+      // our destination
+      this.setState({showEmployees: true});
+    }
+    else {
+      this.setState({needsToSignIn: true});
+    }
+  }
+
+  updateLogIn() {
+    this.setState({loggedIn: 1});
+    console.log("you passed login!: " + this.state.loggedIn);
+  }
+
+  signOut() {
+    this.setState({loggedIn : 0});
+    this.setState({loggedOut: true});
+  }
+
   render() {
     return (
       <div>
@@ -39,7 +96,16 @@ class App extends Component {
           <AppBar
             title="Employee Tracker : Admin View"
             titleStyle={{textAlign: "center"}}
+            onLeftIconButtonTouchTap={() => this.openDrawer()}
             />
+          <Drawer
+            docked={false}
+            width={150}
+            open={this.state.drawerOpened}>
+            <MenuItem onClick={() => this.goToHome() }>Home</MenuItem>
+            <MenuItem onClick={() => this.goToEmployees()}>Employees</MenuItem>
+            <MenuItem onClick={() => this.signOut()}>Sign Out</MenuItem>
+          </Drawer>
           {this.state.startButtons ?
             <div> <br /> <br />
             <RaisedButton label="Login" primary={true} onClick={this.toggleLogin.bind(this)}
@@ -52,8 +118,11 @@ class App extends Component {
           </center>
         </MuiThemeProvider>
 
-        {this.state.showLogin ? <Login /> : null}
+        {this.state.showLogin ? <Login triggerLogInUpdate={this.updateLogIn}/> : null}
         {this.state.showRegister ? <Register /> : null}
+        {this.state.showEmployees ? <Employees /> : null}
+        {this.state.loggedOut ? <center><h1> Logged out </h1></center> : null}
+        {this.state.needsToSignIn ? <center><h1> Please log in to view this! </h1></center> : null}
       </div>
     );
   }
