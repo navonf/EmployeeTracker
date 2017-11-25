@@ -6,7 +6,17 @@ const EmployeeMap = ({ img }) => <div>{img}</div>;
 
 export class Map extends Component {
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      employee: []
+    }
+  }
+
   render() {
+
+
 
       const style = {
         width: '100%',
@@ -48,8 +58,11 @@ export class Map extends Component {
         }
 
       */
-      console.log(this.props.employees);
 
+      // thise blew up the console
+      // this.setState({employee : this.props.employees});
+
+      console.log(this.props.employees);
       return (
         <GoogleMap
           bootstrapURLKeys={{
@@ -65,6 +78,7 @@ export class Map extends Component {
           size={{width: 640, height: 480}}
           >
 
+          {/* this does not quite work */}
           {this.props.employees
             .map((employee) => {
               return ( <EmployeeMap

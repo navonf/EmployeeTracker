@@ -126,7 +126,7 @@ class App extends Component {
         <MuiThemeProvider>
           <center>
           <AppBar
-            title={this.state.loggedIn == 1 ?
+            title={this.state.loggedIn === 1 ?
               <div>Employee Tracker - Admin View : {this.state.name}</div>
               : <div> Employee Tracker - Admin View </div>}
             titleStyle={{textAlign: "center"}}
