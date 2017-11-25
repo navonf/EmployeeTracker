@@ -7,5 +7,5 @@ import registerServiceWorker from './registerServiceWorker';
 
 
 ReactDOM.render(<App />, document.querySelector('.container'));
-ReactDOM.render(<Map />, document.querySelector('.mapcontainer'));
+// ReactDOM.render(<Map />, document.querySelector('.mapcontainer'));
 registerServiceWorker();

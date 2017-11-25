@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Login from './Login';
 import Register from './Register';
-import Employees from './Employees';
+import Map from './Map';
 import fire from './../fire';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -104,8 +104,6 @@ class App extends Component {
           employees.push(snapshot.val());
         }
     });
-
-    console.log(employees);
   }
 
   signOut() {
@@ -151,7 +149,7 @@ class App extends Component {
 
         {this.state.showLogin ? <Login triggerLogInUpdate={this.updateLogIn}/> : null}
         {this.state.showRegister ? <Register /> : null}
-        {this.state.showEmployees ? <Employees /> : null}
+        {this.state.showEmployees ? <Map /> : null}
         {this.state.loggedOut ? <center><h1> Logged out </h1></center> : null}
         {this.state.needsToSignIn ? <center><h1> Please log in to view this! </h1></center> : null}
       </div>
