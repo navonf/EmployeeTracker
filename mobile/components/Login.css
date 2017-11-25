@@ -1,0 +1,40 @@
+.Login {
+  text-align: center;
+}
+
+.Login-logo {
+  animation: Login-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.Login-header {
+  background-color: #222;
+  height: 12em;
+  padding: 2em;
+  color: white;
+  background-color: orange;
+
+}
+
+.Login-title {
+  padding-right: em;
+}
+
+.Login-intro {
+  font-size: large;
+}
+
+.Landing-form {
+  padding-top: 1em;
+  list-style-type: none;
+}
+
+.List-elem {
+  padding-top: 1em;
+}
+
+.divider{
+  width:10px;
+  height:auto;
+  display:inline-block;
+}
