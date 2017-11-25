@@ -39,8 +39,9 @@ class Login extends Component {
         // things we need to send to app.js
         const key = snapshot.key;
         const group = snapshot.val().groupNum;
+        const name = snapshot.val().name;
         // the function to trigger in
-        this.props.triggerLogInUpdate(key, group);
+        this.props.triggerLogInUpdate(key, group, name);
 
         // pull name from db
         this.setState({clientName : snapshot.val().name});

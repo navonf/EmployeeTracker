@@ -25,10 +25,32 @@ export class Map extends Component {
             <EmployeeImage key={index} lat={employee.lat} lng={employee.lng} img={<img src={employee.image} alt={employee.name} height="42" width="42"></img>}
         ))}
 
+        <EmployeeMap
+          lat={28.602734}
+          lng={-81.200049}
+          img={<img src="https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678130-profile-alt-4-128.png" alt="Jane Doe" height="42" width="42"></img>}
+        />
+
+        <EmployeeMap
+          lat={28.604734}
+          lng={-81.290129}
+          img={<img src="https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678130-profile-alt-4-128.png" alt="Jane Doe" height="42" width="42"></img>}
+        />
+
+        {this.props.employeesArray
+          .map((employeesArray) => {
+            return <EmployeeMap
+                    lat={employeesArray.latitude}
+                    lng={employeesArray.longitude}
+                    img={<img src="https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678130-profile-alt-4-128.png" alt="Jane Doe" height="42" width="42"></img>}
+              />
+          })
+        }
+
       */
+      console.log(this.props.employees);
 
       return (
-
         <GoogleMap
           bootstrapURLKeys={{
           key: 'AIzaSyDFNPWio4wskENclNYvxbluPAu_IBpS9sY',
@@ -43,17 +65,16 @@ export class Map extends Component {
           size={{width: 640, height: 480}}
           >
 
-          <EmployeeMap
-            lat={28.602734}
-            lng={-81.200049}
-            img={<img src="https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678130-profile-alt-4-128.png" alt="Jane Doe" height="42" width="42"></img>}
-          />
+          {this.props.employees
+            .map((employee) => {
+              return ( <EmployeeMap
+                      lat={employee.lat}
+                      lng={employee.lng}
+                      img={<img src="https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678130-profile-alt-4-128.png" alt="Jane Doe" height="42" width="42"></img>}
+                      />
+            )})
+          }
 
-          <EmployeeMap
-            lat={28.604734}
-            lng={-81.290129}
-            img={<img src="https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678130-profile-alt-4-128.png" alt="Jane Doe" height="42" width="42"></img>}
-          />
 
           </GoogleMap>
 

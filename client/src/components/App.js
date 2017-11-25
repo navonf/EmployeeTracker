@@ -8,8 +8,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import MenuItem from 'material-ui/MenuItem';
-import IconMenu from 'material-ui/IconMenu';
-import IconButton from 'material-ui/IconButton';
 import Drawer from 'material-ui/Drawer';
 
 class App extends Component {
@@ -28,7 +26,9 @@ class App extends Component {
       groupNum: 0,
       needsToSignIn: false,
       loggedOut: false,
-      userKey: ''
+      userKey: '',
+      employeez: [],
+      name: ''
     }
 
     this.updateLogIn = this.updateLogIn.bind(this);
@@ -78,32 +78,35 @@ class App extends Component {
     }
   }
 
+
   // gets the all information needed from the user
-  updateLogIn(key, num) {
+  updateLogIn(key, num, name) {
 
     // store my employees in here?????
-    var employees = {
-      "name" : '',
-      "groupNum": 0,
-      "latitude": 0,
-      "longitude": 0
-    };
+    // var employees = {
+    //   "name" : '',
+    //   "groupNum": 0,
+    //   "latitude": 0,
+    //   "longitude": 0
+    // };
 
     this.setState({loggedIn: 1});
     console.log("you passed login!: " + this.state.loggedIn + ", userkey: " + key + ", group num: " + num);
     this.setState({userKey : key});
     this.setState({groupNum : num});
+    this.setState({name: name});
 
     const employeesRef = fire.database().ref('employees');
     var employees = [];
-
     employeesRef
       .on('child_added', (snapshot) => {
         // console.log(snapshot.val());
-        if(snapshot.val().groupNum == num) {
+        if(snapshot.val().groupNum === num) {
           employees.push(snapshot.val());
         }
     });
+
+    this.setState({employeez: employees});
   }
 
   signOut() {
@@ -123,7 +126,9 @@ class App extends Component {
         <MuiThemeProvider>
           <center>
           <AppBar
-            title="Employee Tracker : Admin View"
+            title={this.state.loggedIn == 1 ?
+              <div>Employee Tracker - Admin View : {this.state.name}</div>
+              : <div> Employee Tracker - Admin View </div>}
             titleStyle={{textAlign: "center"}}
             onLeftIconButtonTouchTap={() => this.openDrawer()}
             />
@@ -149,7 +154,7 @@ class App extends Component {
 
         {this.state.showLogin ? <Login triggerLogInUpdate={this.updateLogIn}/> : null}
         {this.state.showRegister ? <Register /> : null}
-        {this.state.showEmployees ? <Map /> : null}
+        {this.state.showEmployees ? <Map employees={this.state.employeez}/> : null}
         {this.state.loggedOut ? <center><h1> Logged out </h1></center> : null}
         {this.state.needsToSignIn ? <center><h1> Please log in to view this! </h1></center> : null}
       </div>
