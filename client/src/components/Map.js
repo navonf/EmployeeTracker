@@ -2,47 +2,9 @@ import React, { Component } from 'react';
 import GoogleMap from 'google-map-react';
 
 
-const EmployeeImage = ({ img }) => <div>{img}</div>;
-const EmployeeText = ({ text }) => <div>{text}</div>;
+const EmployeeMap = ({ img }) => <div>{img}</div>;
 
 export class Map extends Component {
-
-  /*
-  Add markers needs to accept latitude and longitude
-  --possibly passed in a double array from another react component
-
-  ex:
-  var employeeLocations = [
-    [28.602734, -81.200049],
-    [27.500000, 70.000000],
-    [50.111111, 67.000888]
-  ];
-
-  */
-
-  addEmployeeLocationMarkers() {
-
-    console.log('addEmployeeLocationMarkers was triggered from OnReady')
-
-  }
-
-  mapClicked() {
-
-    console.log('Map was clicked')
-
-  }
-
-  markerClicked() {
-
-    console.log('Marker clicked')
-
-  }
-
-  onMouseover() {
-
-    console.log('Marker was moused over')
-
-  }
 
   render() {
 
@@ -53,9 +15,15 @@ export class Map extends Component {
       }
 
       /*
-      Still need to grab the employee coords to show on
-      map load
-      const coords =
+
+        Need array of Employees with props from Firebase - lat, lng, image, name
+
+        --Something similar will go in return below to show all employees on the map from firebase
+        --Replaces hardcoded placeholder locations
+        --Code is untested
+        {this.state.employee.map((employee, index) => (
+            <EmployeeImage key={index} lat={employee.lat} lng={employee.lng} img={<img src={employee.image} alt={employee.name} height="42" width="42"></img>}
+        ))}
 
       */
 
@@ -74,13 +42,14 @@ export class Map extends Component {
           zoom={11}
           size={{width: 640, height: 480}}
           >
-          <EmployeeImage
+
+          <EmployeeMap
             lat={28.602734}
             lng={-81.200049}
             img={<img src="https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678130-profile-alt-4-128.png" alt="Jane Doe" height="42" width="42"></img>}
           />
 
-          <EmployeeImage
+          <EmployeeMap
             lat={28.604734}
             lng={-81.290129}
             img={<img src="https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678130-profile-alt-4-128.png" alt="Jane Doe" height="42" width="42"></img>}
