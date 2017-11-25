@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Login from './Login';
 import Register from './Register';
 import Employees from './Employees';
-
+import fire from './../fire';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
@@ -27,8 +27,8 @@ class App extends Component {
       loggedIn: 0,
       groupNum: 0,
       needsToSignIn: false,
-      loggedOut: false
-
+      loggedOut: false,
+      userKey: ''
     }
 
     this.updateLogIn = this.updateLogIn.bind(this);
@@ -78,14 +78,45 @@ class App extends Component {
     }
   }
 
-  updateLogIn() {
+  // gets the all information needed from the user
+  updateLogIn(key, num) {
+
+    // store my employees in here?????
+    var employees = {
+      "name" : '',
+      "groupNum": 0,
+      "latitude": 0,
+      "longitude": 0
+    };
+
     this.setState({loggedIn: 1});
-    console.log("you passed login!: " + this.state.loggedIn);
+    console.log("you passed login!: " + this.state.loggedIn + ", userkey: " + key + ", group num: " + num);
+    this.setState({userKey : key});
+    this.setState({groupNum : num});
+
+    const employeesRef = fire.database().ref('employees');
+    var employees = [];
+
+    employeesRef
+      .on('child_added', (snapshot) => {
+        // console.log(snapshot.val());
+        if(snapshot.val().groupNum == num) {
+          employees.push(snapshot.val());
+        }
+    });
+
+    console.log(employees);
   }
 
   signOut() {
     this.setState({loggedIn : 0});
     this.setState({loggedOut: true});
+
+    const usersRef = fire.database().ref('users');
+    usersRef
+      .on('child_added', (snapshot) => {
+      snapshot.ref.update({loggedIn: 0});
+    });
   }
 
   render() {

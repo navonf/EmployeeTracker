@@ -52,8 +52,10 @@ class Register extends Component {
         groupNum: this.state.groupNum
       }
 
-
+      // push current attibutes to firebase
       usersRef.push(user);
+
+      // reset state variables
       this.setState({
         username: '',
         password: ''

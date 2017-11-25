@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import fire from './../fire';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import TextField from 'material-ui/TextField';
 
 
 
@@ -34,8 +33,5 @@ class Employees extends Component {
 }
 
 
-const style = {
-
-};
 
 export default Employees;

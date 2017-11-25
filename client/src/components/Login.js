@@ -35,15 +35,18 @@ class Login extends Component {
 
         // set loggon attribute to 1, indicating user is logged on
         snapshot.ref.update({loggedIn: 1});
-        this.props.triggerLogInUpdate();
+
+        // things we need to send to app.js
+        const key = snapshot.key;
+        const group = snapshot.val().groupNum;
+        // the function to trigger in
+        this.props.triggerLogInUpdate(key, group);
 
         // pull name from db
         this.setState({clientName : snapshot.val().name});
 
         this.setState({success : true});
         this.setState({failed : false});
-
-        const logged = 1;
       }
       else { // login fails
         this.setState({failed : true});
