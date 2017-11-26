@@ -1,13 +1,27 @@
-import React, { Component } from 'react';
+import React, { Component} from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import fire from './../fire';
+import {
+  AppRegistry,
+  ToolbarAndroid,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Dimensions,
+  TextInput,
+  Button,
+  TouchableOpacity
+} from 'react-native';
 
-//import './Login.css';
+const { width, height } = Dimensions.get("window");
+const lockIcon = require("./login1_lock.png");
+const personIcon = require("./login1_person.png");
 
-class Login extends Component {
-  constructor(props) {
+export default class Login extends Component {
+    constructor(props) {
     super(props);
 
     this.state = {
@@ -24,7 +38,7 @@ class Login extends Component {
     e.preventDefault();
     const user = this.state.username;
     const pass = this.state.password;
-    const usersRef = fire.database().ref('users');
+    const usersRef = fire.database().ref('employees');
     usersRef
       .on('child_added', (snapshot) => {
       if(snapshot.val().user === user && snapshot.val().password === pass) {
@@ -57,36 +71,115 @@ class Login extends Component {
 
   render() {
     return (
-      <center>
-      <div>
-        <MuiThemeProvider>
-          <div>
-          <TextField
-             hintText="Enter your Username"
-             floatingLabelText="Username"
-             onChange = {(event,newValue) => this.setState({username:newValue})}
-             />
-           <br/>
-             <TextField
-               type="password"
-               hintText="Enter your Password"
-               floatingLabelText="Password"
-               onChange = {(event,newValue) => this.setState({password:newValue})}
-               />
-             <br/>
-             <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleLogin(event)}/>
-         </div>
-         </MuiThemeProvider>
-         {this.state.success ? <h1> hello {this.state.clientName}! you are logged in. </h1> : null}
-         {this.state.failed ? <h1> wrong username or password </h1> : null}
-      </div>
-      </center>
+      <View style={styles.container}>
+
+        <ToolbarAndroid title="Employee Tracker" titleColor = 'white' style={styles.toolbar}/>
+          <View style={styles.wrapper}>
+            <View style={styles.inputWrap}>
+              <View style={styles.iconWrap}>
+                <Image source={personIcon} style={styles.icon} resizeMode="contain" />
+              </View>
+              <TextInput
+                placeholder="Username"
+                placeholderTextColor="#FFF"
+                style={styles.input}
+                onChangeText = {(username) => this.setState({username})}
+                value={this.state.username}
+              />
+            </View>
+            <View style={styles.inputWrap}>
+              <View style={styles.iconWrap}>
+                <Image source={lockIcon} style={styles.icon} resizeMode="contain" />
+              </View>
+              <TextInput
+                placeholderTextColor="#FFF"
+                placeholder="Password"
+                style={styles.input}
+                secureTextEntry
+                onChangeText = {(text) => this.setState({password:text})}
+              />
+            </View>
+
+            <TouchableOpacity onPress={this.handleLogin} activeOpacity={.5}>
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>Sign In</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+
+      </View>
     );
   }
 }
-
-const style = {
-
-};
-
-export default Login;
+const styles = StyleSheet.create({
+  toolbar: {
+      //flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      //marginLeft: 'auto',
+      //marginRight: 'auto',
+      //width: 600,
+      height:50,
+      backgroundColor: "#FF3365",
+      //position: 'center',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: 'black',
+  },
+  markWrap: {
+    flex: 1,
+    paddingVertical: 30,
+  },
+  mark: {
+    width: null,
+    height: null,
+    flex: 1,
+  },
+  background: {
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      justifyContent: 'center',
+      alignItems: 'center',
+  },
+  wrapper: {
+    paddingVertical: 30,
+  },
+  inputWrap: {
+    flexDirection: "row",
+    marginVertical: 10,
+    height: 40,
+  },
+  iconWrap: {
+    paddingHorizontal: 7,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  icon: {
+    height: 20,
+    width: 20,
+  },
+  input: {
+    flex: 1,
+    paddingHorizontal: 10,
+    color: "#CCC"
+  },
+  button: {
+    backgroundColor: "#FF3365",
+    paddingVertical: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 30,
+  },
+  buttonText: {
+    color: "#FFF",
+    fontSize: 18,
+  },
+  accountText: {
+    color: "#D8D8D8"
+  },
+});
+//export default Login;
