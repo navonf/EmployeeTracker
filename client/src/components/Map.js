@@ -78,10 +78,9 @@ export class Map extends Component {
           size={{width: 640, height: 480}}
           >
 
-          {/* this does not quite work */}
           {this.props.employees
-            .map((employee) => {
-              return ( <EmployeeMap
+            .map((employee, index) => {
+              return ( <EmployeeMap key={index}
                       lat={employee.lat}
                       lng={employee.lng}
                       img={<img src="https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678130-profile-alt-4-128.png" alt="Jane Doe" height="42" width="42"></img>}
