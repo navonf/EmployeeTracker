@@ -32,6 +32,8 @@ export default class Login extends Component {
       clientName: '',
       userKey: ''
     }
+
+    this.handleLogin = this.handleLogin.bind(this)
   }
 
   // This function handles login
