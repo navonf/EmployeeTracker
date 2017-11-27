@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Login from './Login';
 import Register from './Register';
+import EmployeeRegister from './EmployeeRegister';
 import Map from './Map';
 import fire from './../fire';
 
@@ -21,7 +22,8 @@ class App extends Component {
       startButtons: true,
       success: false,
       drawerOpened: false,
-      showEmployees: false,
+      showEmployeesMap: false,
+      showEmployeesRegister: false,
       loggedIn: 0,
       groupNum: 0,
       needsToSignIn: false,
@@ -46,16 +48,16 @@ class App extends Component {
     this.setState({showLogin : false});
   }
 
+
   openDrawer() {
     this.setState({drawerOpened: true});
 
   }
 
   goToHome() {
+    // turn these off
     this.setState({drawerOpened: false});
-    this.setState({showEmployees: false});
-
-    // our destination
+    this.setState({showEmployeesMap: false});
     this.setState({needsToSignIn: false});
     this.setState({loggedOut: false});
 
@@ -64,14 +66,33 @@ class App extends Component {
 
   goToEmployees() {
     if(this.state.loggedIn === 1) {
+      // turn these components off
       this.setState({needsToSignIn: false});
       this.setState({drawerOpened: false});
       this.setState({startButtons: false});
       this.setState({showRegister : false});
       this.setState({showLogin : false});
+      this.setState({showEmployeesRegister: false});
 
       // our destination
-      this.setState({showEmployees: true});
+      this.setState({showEmployeesMap: true});
+    }
+    else {
+      this.setState({needsToSignIn: true});
+    }
+  }
+
+  goToEmployeeRegister() {
+    if(this.state.loggedIn === 1) {
+      this.setState({needsToSignIn: false});
+      this.setState({drawerOpened: false});
+      this.setState({startButtons: false});
+      this.setState({showRegister : false});
+      this.setState({showLogin : false});
+      this.setState({showEmployeesMap: false});
+
+      // our destination
+      this.setState({showEmployeesRegister: true});
     }
     else {
       this.setState({needsToSignIn: true});
@@ -81,14 +102,6 @@ class App extends Component {
 
   // gets the all information needed from the user
   updateLogIn(key, num, name) {
-
-    // store my employees in here?????
-    // var employees = {
-    //   "name" : '',
-    //   "groupNum": 0,
-    //   "latitude": 0,
-    //   "longitude": 0
-    // };
 
     this.setState({loggedIn: 1});
     console.log("you passed login!: " + this.state.loggedIn + ", userkey: " + key + ", group num: " + num);
@@ -101,7 +114,7 @@ class App extends Component {
     employeesRef
       .on('child_added', (snapshot) => {
         // console.log(snapshot.val());
-        if(snapshot.val().groupNum === num) {
+        if(snapshot.val().groupNum === num && snapshot.val().loggedIn === 1) {
           employees.push(snapshot.val());
         }
     });
@@ -134,10 +147,11 @@ class App extends Component {
             />
           <Drawer
             docked={false}
-            width={150}
+            width={180}
             open={this.state.drawerOpened}>
-            <MenuItem onClick={() => this.goToHome() }>Home</MenuItem>
-            <MenuItem onClick={() => this.goToEmployees()}>Employees</MenuItem>
+            <MenuItem onClick={() => this.goToHome()}>Home</MenuItem>
+            <MenuItem onClick={() => this.goToEmployees()}>Employee View</MenuItem>
+            <MenuItem onClick={() => this.goToEmployeeRegister()}>Register Employees</MenuItem>
             <MenuItem onClick={() => this.signOut()}>Sign Out</MenuItem>
           </Drawer>
           {this.state.startButtons ?
@@ -154,7 +168,8 @@ class App extends Component {
 
         {this.state.showLogin ? <Login triggerLogInUpdate={this.updateLogIn}/> : null}
         {this.state.showRegister ? <Register /> : null}
-        {this.state.showEmployees ? <Map employees={this.state.employeez}/> : null}
+        {this.state.showEmployeesMap ? <Map employees={this.state.employeez}/> : null}
+        {this.state.showEmployeesRegister ? <EmployeeRegister groupNum={this.state.groupNum}/> : null}
         {this.state.loggedOut ? <center><h1> Logged out </h1></center> : null}
         {this.state.needsToSignIn ? <center><h1> Please log in to view this! </h1></center> : null}
       </div>
