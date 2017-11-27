@@ -114,7 +114,6 @@ class App extends Component {
     var employees = [];
     employeesRef
       .on('child_added', (snapshot) => {
-        // console.log(snapshot.val());
         if(snapshot.val().groupNum === num && snapshot.val().loggedIn === 1) {
           employees.push(snapshot.val());
         }

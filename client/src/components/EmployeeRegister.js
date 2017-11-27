@@ -14,7 +14,7 @@ class EmployeeRegister extends Component {
     super(props);
 
     this.state = {
-      username: '',
+      empID: 0,
       password: '',
       password2: '',
       name: '',
@@ -27,7 +27,7 @@ class EmployeeRegister extends Component {
   }
 
   handleRegister(e) {
-    if(this.state.username === '' || this.state.password === '' || this.state.password2 === '' || this.state.name === '') {
+    if(this.state.empID === 0 || this.state.password === '' || this.state.password2 === '' || this.state.name === '') {
       this.setState({emptyForm : true});
       this.setState({passwordInvalid: false});
 
@@ -43,7 +43,7 @@ class EmployeeRegister extends Component {
       const empRef = fire.database().ref('employees');
       const emp = {
         name: this.state.name,
-        user: this.state.username,
+        empID: this.state.empID,
         password: this.state.password,
         lat: 0,
         lng: 0,
@@ -57,7 +57,7 @@ class EmployeeRegister extends Component {
 
       // reset state variables
       this.setState({
-        username: '',
+        empID: 0,
         password: ''
       });
 
@@ -87,9 +87,9 @@ class EmployeeRegister extends Component {
               />
                <br/>
             <TextField
-              hintText="Enter Employee Username"
-              floatingLabelText="Employee Username"
-              onChange = {(event,newValue) => this.setState({username:newValue})}
+              hintText="Enter Employee ID"
+              floatingLabelText="Employee ID"
+              onChange = {(event,newValue) => this.setState({empID:newValue})}
               />
               <br/>
             <TextField

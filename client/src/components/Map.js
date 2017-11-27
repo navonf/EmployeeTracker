@@ -4,6 +4,7 @@ import GoogleMap from 'google-map-react';
 
 const EmployeeMap = ({ img }) => <div>{img}</div>;
 
+
 export class Map extends Component {
 
   constructor(props) {
@@ -76,6 +77,7 @@ export class Map extends Component {
           }}
           zoom={11}
           size={{width: 640, height: 480}}
+          margin={[K_MARGIN_TOP, K_MARGIN_RIGHT, K_MARGIN_BOTTOM, K_MARGIN_LEFT]}
           >
 
           {this.props.employees
