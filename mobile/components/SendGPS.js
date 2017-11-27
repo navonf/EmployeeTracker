@@ -31,7 +31,7 @@ async updateGPS() {
         const usersRef = fire.database().ref('employees');
         usersRef
           .on('child_changed', (snapshot) => {
-          if(snapshot.val().user === this.state.username) {
+          if(snapshot.val().user === this.props.username) {
             //this.setState({userKey : snapshot.key});
             //console.log("this is your password:" + snapshot.val().password);
             //console.log("this is your username:" + snapshot.val().user);
@@ -89,7 +89,7 @@ async updateGPS() {
           <View style={{ flexGrow: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Text>Latitude: {this.state.latitude}</Text>
             <Text>Longitude: {this.state.longitude}</Text>
-            <Text>Message: {this.state.username}</Text>
+            <Text>Logged in as: {this.props.username}</Text>
             {this.state.error ? <Text>Error: {this.state.error}</Text> : null}
           </View>
         );

@@ -29,7 +29,7 @@ export default class Secured extends Component {
                 <Text style={{fontSize: 27}}>
                     App Active. Sending GPS data
                 </Text>
-                <SendGPS />
+                <SendGPS username={this.props.username}/>
                 <View style={{margin:20}} />
                     <Button onPress={this.onLogout} title="Log Out" />
             </ScrollView>

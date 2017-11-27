@@ -38,6 +38,10 @@ export default class Login extends Component {
     this.handleLogin = this.handleLogin.bind(this)
   }
 
+  updateParentState(data){
+      this.props.updateParentState(data);
+  }
+
 
   // This function handles login
   handleLogin = (e) => {
@@ -45,6 +49,7 @@ export default class Login extends Component {
     e.preventDefault();
     const user = this.state.username;
     const pass = this.state.password;
+    this.updateParentState({username: user});
     const usersRef = fire.database().ref('employees');
     usersRef
       .on('child_added', (snapshot) => {
