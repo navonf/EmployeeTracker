@@ -40,10 +40,16 @@ async updateGPS() {
 
             // set loggon attribute to 1, indicating user is logged on
             //snapshot.ref.update({loggedIn: 1});
+            var time = Math.floor(Date.now() / 1000);
+            this.setState({timestamp: time});
+            if (this.state.latitude != null && this.state.longitude != null) {
+                snapshot.ref.update({lat: this.state.latitude, lng: this.state.longitude});
+            }
 
-            this.setState({timestamp: Math.floor(Date.now() / 1000)});
-            snapshot.ref.update({lat: this.state.latitude, lng: this.state.longitude});
-            snapshot.ref.update({timestamp: this.state.timestamp });
+            if (this.state.timestamp != null) {
+                snapshot.ref.update({timestamp: this.state.timestamp });
+            }
+
 
 
             // things we need to send to app.js
@@ -80,7 +86,7 @@ async updateGPS() {
             });
           },
           (error) => this.setState({ error: error.message }),
-          { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+          { enableHighAccuracy: true, timeout: 30000, maximumAge: 15000 },
         );
 
         this.timer = setInterval(()=> this.updateGPS(), 10000);
@@ -92,7 +98,7 @@ async updateGPS() {
         return (
           <View style={{ flexGrow: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Text>Latitude: {this.state.latitude}</Text>
-            <Text>Longitude: {this.state.longitude}</Text>
+            <Text>Longitude: {this.state.timestamp}</Text>
             <Text>Logged in as: {this.props.username}</Text>
             {this.state.error ? <Text>Error: {this.state.error}</Text> : null}
           </View>

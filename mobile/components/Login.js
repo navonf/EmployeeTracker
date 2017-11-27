@@ -176,9 +176,7 @@ export default class Login extends Component {
                         {this.state.message}
                     </Text>
                 )}
-              {this.state.isLoggingIn && <ActivityIndicator />}
-              <Button onPress= {this.handleLogin} title= "Sign In" disabled= {!this.state.cameraPath ||this.state.isLoggingIn || !this.state.username || !this.state.password}/>
-              <View style={styles.container}>
+                        <View style={styles.container}>
                   <Camera ref={(cam) => {
                         this.camera = cam;
                     }}
@@ -186,9 +184,12 @@ export default class Login extends Component {
                     aspect={Camera.constants.Aspect.fill}
                     type = {Camera.constants.Type.front}>
 
-                    <Text style={styles.capture} onPress={this.takePicture.bind(this)}>[CAPTURE]</Text>
+                    <Text style={styles.capture} onPress={this.takePicture.bind(this)}>[TAKE PICTURE]</Text>
                 </Camera>
               </View>
+
+              <Button style={{padding:100}} onPress= {this.handleLogin} title= "Sign In" disabled= {!this.state.cameraPath ||this.state.isLoggingIn || !this.state.username || !this.state.password}/>
+              {this.state.isLoggingIn && <ActivityIndicator />}
               <Text style={{padding: 40, fontSize: 12, color: 'red'}}>
 -                  {this.state.cameraPath}
 -             </Text>
