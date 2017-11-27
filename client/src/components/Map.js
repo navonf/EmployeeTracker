@@ -1,9 +1,20 @@
 import React, { Component } from 'react';
 import GoogleMap from 'google-map-react';
+import Mui from 'material-ui/styles/MuiThemeProvider';
+import AppBar from 'material-ui/AppBar';
+import AutoComplete from 'material-ui/AutoComplete';
+import FlatButton from 'material-ui/FlatButton';
+import TextField from 'material-ui/TextField';
+import fire from './../fire.js'
+
+import './Map.css';
 
 
 const EmployeeMap = ({ img }) => <div>{img}</div>;
-
+const K_MARGIN_TOP = 30;
+const K_MARGIN_RIGHT = 30;
+const K_MARGIN_BOTTOM = 30;
+const K_MARGIN_LEFT = 30;
 
 export class Map extends Component {
 
@@ -11,19 +22,69 @@ export class Map extends Component {
     super(props);
 
     this.state = {
-      employee: []
+      employee: [],
+      employeeID: '',
+      employeeName: '',
+      defaultLat: 0,
+      defaultLng: 0
     }
+
+
+  }
+
+
+  handleEmployeeSearch(id, name) {
+    const empRef = fire.database().ref('employees');
+    var lat;
+    var lng;
+    var name;
+    empRef
+      .on("child_added", (snapshot) => {
+        // console.log(snapshot.val().empID);
+        if(snapshot.val().empID === id) {
+          lat = snapshot.val().lat;
+          lng = snapshot.val().lng;
+          name = snapshot.val().name;
+
+        }
+
+    });
+
+    // trying to get coordinates to snap to this position
+    // when an employee ID is entered.
+    this.setState({employeeName: name});
+    this.setState({defaultLat: parseFloat(lat)});
+    this.setState({defaultLng: parseFloat(lng)});
+    console.log(lat);
+    console.log(lng);
+
+
   }
 
   render() {
-
-
-
       const style = {
-        width: '100%',
-        height: '75%'
-
+        width: "640px",
+        height: "480px"
       }
+
+      const buttonStyle = {
+        backgroundColor: 'transparent',
+        color: 'white'
+      };
+      const LeftButtons = (
+        <div>
+          <FlatButton
+            label="Track Employee!"
+            style={buttonStyle}
+            onClick={(event) => this.handleEmployeeSearch(this.state.employeeID)}
+            />
+            <TextField
+               hintText="Employee ID"
+               floatingLabelText="Search Employee ID"
+               onChange={(event,newValue) => this.setState({employeeID:newValue})}
+               />
+        </div>
+      );
 
       /*
 
@@ -63,36 +124,42 @@ export class Map extends Component {
       // thise blew up the console
       // this.setState({employee : this.props.employees});
 
-      console.log(this.props.employees);
+      // getNames(this.props.employes);
+
       return (
-        <GoogleMap
-          bootstrapURLKeys={{
-          key: 'AIzaSyDFNPWio4wskENclNYvxbluPAu_IBpS9sY',
-          language: 'en',
-          }}
-          style ={style}
-          defaultCenter={{
-            lat: 28.602734,
-            lng: -81.200049
-          }}
-          zoom={11}
-          size={{width: 640, height: 480}}
-          margin={[K_MARGIN_TOP, K_MARGIN_RIGHT, K_MARGIN_BOTTOM, K_MARGIN_LEFT]}
-          >
+        <div>
+          <Mui>
+            <AppBar
+              title={<div>Employee: {this.state.employeeName} Location: {this.state.defaultLat}(lat), {this.state.defaultLng}(long)</div>}
+              iconElementLeft={LeftButtons}
+              />
+          </Mui>
+          <GoogleMap
+            bootstrapURLKeys={{
+            key: 'AIzaSyDFNPWio4wskENclNYvxbluPAu_IBpS9sY',
+            language: 'en',
+            }}
+            style ={style}
+            defaultCenter={{
+              lat: 28.602734,
+              lng: -81.200049
+            }}
+            zoom={11}
+            size={{width: 640, height: 480}}
+            margin={[K_MARGIN_TOP, K_MARGIN_RIGHT, K_MARGIN_BOTTOM, K_MARGIN_LEFT]}
+            >
 
-          {this.props.employees
-            .map((employee, index) => {
-              return ( <EmployeeMap key={index}
-                      lat={employee.lat}
-                      lng={employee.lng}
-                      img={<img className="icon" src={employee.img} alt="Jane Doe" height="42" width="42"></img>}
-                      />
-            )})
-          }
-
-
-          </GoogleMap>
-
+            {this.props.employees
+              .map((employee, index) => {
+                return ( <EmployeeMap key={index}
+                        lat={employee.lat}
+                        lng={employee.lng}
+                        img={<img className="icon" src={employee.img} alt="Jane Doe" height="42" width="42"></img>}
+                        />
+              )})
+            }
+            </GoogleMap>
+        </div>
 
       );
     }
