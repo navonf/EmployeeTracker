@@ -31,7 +31,7 @@ async updateGPS() {
         const usersRef = fire.database().ref('employees');
         usersRef
           .on('child_changed', (snapshot) => {
-          if(snapshot.val().empID === parseInt(this.props.username,10)) {
+          if(snapshot.val().empID === this.props.username) {
             //this.setState({userKey : snapshot.key});
             //console.log("this is your password:" + snapshot.val().password);
             //console.log("this is your username:" + snapshot.val().user);

@@ -58,7 +58,7 @@ export default class Login extends Component {
   handleLogin = (e) => {
     this.setState({isLoggingIn: true});
     e.preventDefault();
-    const user = parseInt(this.state.username,10);
+    const user = this.state.username;
     const pass = this.state.password;
     this.updateParentState({username: user});
     const usersRef = fire.database().ref('employees');
