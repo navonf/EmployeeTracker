@@ -4,6 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import fire from './../fire';
 import Camera from 'react-native-camera';
+import RNFetchBlob from 'react-native-fetch-blob'
 
 import {
   AppRegistry,
@@ -17,13 +18,20 @@ import {
   TextInput,
   Button,
   ActivityIndicator,
-  TouchableOpacity
+  TouchableOpacity,
+  Platform
+
 
 } from 'react-native';
 
 const { width, height } = Dimensions.get("window");
 const lockIcon = require("./login1_lock.png");
 const personIcon = require("./login1_person.png");
+
+const Blob = RNFetchBlob.polyfill.Blob
+const fs = RNFetchBlob.fs
+window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
+window.Blob = Blob
 
 export default class Login extends Component {
     constructor(props) {
@@ -32,10 +40,17 @@ export default class Login extends Component {
     this.state = {
       isLoggingIn: false,
       message: '',
-      cameraPath:''
+      cameraPath:null,
+      userKey: '',
+      imageUrl:null,
+      username: 0,
     }
 
     this.handleLogin = this.handleLogin.bind(this)
+  }
+
+  updateParentState(data){
+      this.props.updateParentState(data);
   }
 
 
@@ -43,15 +58,18 @@ export default class Login extends Component {
   handleLogin = (e) => {
     this.setState({isLoggingIn: true});
     e.preventDefault();
-    const user = this.state.username;
+    const user = parseInt(this.state.username,10);
     const pass = this.state.password;
+    this.updateParentState({username: user});
     const usersRef = fire.database().ref('employees');
+
     usersRef
       .on('child_added', (snapshot) => {
-      if(snapshot.val().user === user && snapshot.val().password === pass) {
+      if(snapshot.val().empID === user && snapshot.val().password === pass) {
         this.setState({userKey : snapshot.key});
+        this.updateParentState({userKey : snapshot.key});
         console.log("this is your password:" + snapshot.val().password);
-        console.log("this is your username:" + snapshot.val().user);
+        console.log("this is your username:" + snapshot.val().empID);
 
 
         // set loggon attribute to 1, indicating user is logged on
@@ -68,8 +86,21 @@ export default class Login extends Component {
 
         this.setState({success : true});
         this.setState({failed : false});
-        this.setState({isLoggingIn: false});
+
+        this.uploadImage(this.state.cameraPath, this.state.userKey);
+
+
+        //const imageRef = fire.storage().ref('images');
+        //imageRef.getDownloadUrl().then(function(url) {
+        //    var img = document.getElementById(this.state.userKey);
+        //    this.setState({imageUrl: img.src});
+        //})
+
+        //snapshot.ref.update({img: this.state.imageUrl});
+
         this.props.onLoginPress();
+        this.setState({isLoggingIn: false});
+
       }
       else { // login fails
         this.setState({failed : true});
@@ -78,7 +109,41 @@ export default class Login extends Component {
         this.setState({message: "Wrong Username or Password"});
       }
     });
+
+
   }
+
+
+  uploadImage(uri, imageName, mime = 'application/octet-stream') {
+      return new Promise((resolve, reject) => {
+        const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri
+        let uploadBlob = null
+        var tmpimg
+
+        const imageRef = fire.storage().ref('images').child(imageName)
+
+        fs.readFile(uploadUri, 'base64')
+          .then((data) => {
+            return Blob.build(data, { type: `${mime};BASE64` })
+          })
+          .then((blob) => {
+            uploadBlob = blob
+            return imageRef.put(blob, { contentType: mime })
+          })
+          .then(() => {
+            uploadBlob.close()
+            return imageRef.getDownloadURL();
+          })
+          .then(() => {
+
+          })
+          .catch((error) => {
+            reject(error)
+        })
+      })
+  }
+
+
 
   takePicture() {
     const options = {};
@@ -96,9 +161,10 @@ export default class Login extends Component {
                     Employee Tracker: Login
                 </Text>
               <TextInput
-                placeholder="Username"
+                  keyboardType = 'phone-pad'
+                placeholder="Employee ID"
                 onChangeText = {(username) => this.setState({username})}
-                value={this.state.username}
+                //value={this.state.username}
               />
               <TextInput
                 placeholder="Password"
@@ -111,7 +177,7 @@ export default class Login extends Component {
                     </Text>
                 )}
               {this.state.isLoggingIn && <ActivityIndicator />}
-              <Button onPress= {this.handleLogin} title= "Sign In" disabled= {this.state.isLoggingIn || !this.state.username || !this.state.password}/>
+              <Button onPress= {this.handleLogin} title= "Sign In" disabled= {!this.state.cameraPath ||this.state.isLoggingIn || !this.state.username || !this.state.password}/>
               <View style={styles.container}>
                   <Camera ref={(cam) => {
                         this.camera = cam;
@@ -123,7 +189,7 @@ export default class Login extends Component {
                     <Text style={styles.capture} onPress={this.takePicture.bind(this)}>[CAPTURE]</Text>
                 </Camera>
               </View>
-              <Text style={{padding: 100, fontSize: 12, color: 'red'}}>
+              <Text style={{padding: 40, fontSize: 12, color: 'red'}}>
 -                  {this.state.cameraPath}
 -             </Text>
 

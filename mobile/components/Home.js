@@ -17,13 +17,17 @@ export default class Home extends Component {
 	userKey: '',
   }
 
+  updateState(data){
+	  this.setState(data);
+  }
+
 
   render() {
 
     if (this.state.isLoggedIn)
-      return <Logout onLogoutPress={() => this.setState({isLoggedIn: 0})} />;
+      return <Logout username = {this.state.username} userKey={this.state.userKey} onLogoutPress={() => this.setState({isLoggedIn: 0})} />;
     else
-      return <Login onLoginPress={() => this.setState({isLoggedIn: 1})}
+      return <Login updateParentState={this.updateState.bind(this)} onLoginPress={() => this.setState({isLoggedIn: 1})}
         />;
   }
 

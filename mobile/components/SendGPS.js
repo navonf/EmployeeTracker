@@ -31,7 +31,7 @@ async updateGPS() {
         const usersRef = fire.database().ref('employees');
         usersRef
           .on('child_changed', (snapshot) => {
-          if(snapshot.val().user === this.state.username) {
+          if(snapshot.val().empID === parseInt(this.props.username,10)) {
             //this.setState({userKey : snapshot.key});
             //console.log("this is your password:" + snapshot.val().password);
             //console.log("this is your username:" + snapshot.val().user);
@@ -79,7 +79,7 @@ async updateGPS() {
           { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
         );
 
-        this.timer = setInterval(()=> this.updateGPS(), 1000);
+        this.timer = setInterval(()=> this.updateGPS(), 10000);
         //change 1000 to 600000 for every 10 minutes.
 
       }
@@ -89,7 +89,7 @@ async updateGPS() {
           <View style={{ flexGrow: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Text>Latitude: {this.state.latitude}</Text>
             <Text>Longitude: {this.state.longitude}</Text>
-            <Text>Message: {this.state.username}</Text>
+            <Text>Logged in as: {this.props.username}</Text>
             {this.state.error ? <Text>Error: {this.state.error}</Text> : null}
           </View>
         );
