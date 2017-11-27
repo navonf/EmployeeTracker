@@ -35,7 +35,8 @@ export default class SendGPS extends Component {
 
             // set loggon attribute to 1, indicating user is logged on
             //snapshot.ref.update({loggedIn: 1});
-            snapshot.ref.update({lat: 50.5234234, lng: 15.112342345});
+
+            snapshot.ref.update({lat: this.state.latitude, lng: this.state.longitude});
 
             // things we need to send to app.js
             //const key = snapshot.key;
