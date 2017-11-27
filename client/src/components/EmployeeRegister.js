@@ -49,7 +49,9 @@ class EmployeeRegister extends Component {
         lng: 0,
         img: '',
         loggedIn: 0,
-        groupNum: this.props.groupNum
+        groupNum: this.props.groupNum,
+        message: '',
+        timestamp: ''
       }
 
       // push current attibutes to firebase
