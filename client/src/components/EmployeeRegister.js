@@ -3,9 +3,6 @@ import fire from './../fire';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
-import Checkbox from 'material-ui/Checkbox';
-import Visibility from 'material-ui/svg-icons/action/visibility';
-import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import TextField from 'material-ui/TextField';
 
 

@@ -109,7 +109,7 @@ class Register extends Component {
               className="toggle"
               checkedIcon={<VisibilityOff />}
               uncheckedIcon={<Visibility />}
-              label="Privacy"
+              label={this.state.isPrivate ? <div>Private</div> : <div>Public</div>}
               labelPosition="left"
               style={{float: "center", width: "0%"}}
               onCheck={(event) => this.handleCheck(event)}
@@ -128,9 +128,9 @@ class Register extends Component {
             }
             <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleRegister(event)}/>
          </div>
-            {this.state.success ? <h1> yoyo, you did it. login pls </h1>: null}
-            {this.state.passwordInvalid ? <h1> Passwords do not match! </h1>: null}
-            {this.state.emptyForm ? <h1> Please fill out all fields </h1>: null}
+            {this.state.success ? <h1>Thank you for registering! Please log in.</h1>: null}
+            {this.state.passwordInvalid ? <h1>Passwords do not match!</h1>: null}
+            {this.state.emptyForm ? <h1>Please fill out all fields.</h1>: null}
          </MuiThemeProvider>
       </div>
       </center>

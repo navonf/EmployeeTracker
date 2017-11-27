@@ -78,8 +78,8 @@ class Login extends Component {
              <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleLogin(event)}/>
          </div>
          </MuiThemeProvider>
-         {this.state.success ? <h1> hello {this.state.clientName}! you are logged in. </h1> : null}
-         {this.state.failed ? <h1> wrong username or password </h1> : null}
+         {this.state.success ? <h1> Hello {this.state.clientName}! you are logged in. </h1> : null}
+         {this.state.failed ? <h1> Wrong username or password </h1> : null}
       </div>
       </center>
     );
