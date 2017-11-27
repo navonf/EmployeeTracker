@@ -6,9 +6,11 @@ import {
     Button
 } from 'react-native';
 import fire from './../fire';
+import TimerMixin from 'react-timer-mixin';
 
 
 export default class SendGPS extends Component {
+    mixins: [TimerMixin];
 
     constructor(props) {
         super(props);
@@ -22,12 +24,14 @@ export default class SendGPS extends Component {
         this.updateGPS = this.updateGPS.bind(this)
     }
 
-    updateGPS() {
+
+
+async updateGPS() {
         //this.setState({message:snaps});
         const usersRef = fire.database().ref('employees');
         usersRef
           .on('child_changed', (snapshot) => {
-          if(snapshot.val().user != this.state.username) {
+          if(snapshot.val().user === this.state.username) {
             //this.setState({userKey : snapshot.key});
             //console.log("this is your password:" + snapshot.val().password);
             //console.log("this is your username:" + snapshot.val().user);
@@ -62,11 +66,12 @@ export default class SendGPS extends Component {
     }
 
     componentDidMount() {
+        //var TimerMixin = require('react-timer-mixin');
         navigator.geolocation.getCurrentPosition(
           (position) => {
             this.setState({
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
+              latitude: position.coords.latitude.toFixed(4),
+              longitude: position.coords.longitude.toFixed(4),
               error: null,
             });
           },
@@ -75,7 +80,8 @@ export default class SendGPS extends Component {
         );
 
         this.timer = setInterval(()=> this.updateGPS(), 1000);
-        this.updateGPS();
+        //change 1000 to 600000 for every 10 minutes.
+
       }
 
       render() {
