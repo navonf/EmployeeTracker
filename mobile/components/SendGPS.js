@@ -19,6 +19,7 @@ export default class SendGPS extends Component {
           latitude: null,
           longitude: null,
           error: null,
+          timestamp: null,
           message: 'hello',
         };
         this.updateGPS = this.updateGPS.bind(this)
@@ -40,7 +41,10 @@ async updateGPS() {
             // set loggon attribute to 1, indicating user is logged on
             //snapshot.ref.update({loggedIn: 1});
 
+            this.setState({timestamp: Math.floor(Date.now() / 1000)});
             snapshot.ref.update({lat: this.state.latitude, lng: this.state.longitude});
+            snapshot.ref.update({timestamp: this.state.timestamp });
+
 
             // things we need to send to app.js
             //const key = snapshot.key;
