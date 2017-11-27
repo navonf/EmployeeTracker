@@ -123,7 +123,7 @@ class EmployeeRegister extends Component {
             }
             <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleRegister(event)}/>
          </div>
-            {this.state.success ? <h1> yoyo, you did it. login pls </h1>: null}
+            {this.state.success ? <h1> Employee Registered. </h1>: null}
             {this.state.passwordInvalid ? <h1> Passwords do not match! </h1>: null}
             {this.state.emptyForm ? <h1> Please fill out all fields </h1>: null}
          </MuiThemeProvider>

@@ -61,31 +61,8 @@ export class Map extends Component {
 
   }
 
+
   render() {
-      const style = {
-        width: "640px",
-        height: "480px"
-      }
-
-      const buttonStyle = {
-        backgroundColor: 'transparent',
-        color: 'white'
-      };
-      const LeftButtons = (
-        <div>
-          <FlatButton
-            label="Track Employee!"
-            style={buttonStyle}
-            onClick={(event) => this.handleEmployeeSearch(this.state.employeeID)}
-            />
-            <TextField
-               hintText="Employee ID"
-               floatingLabelText="Search Employee ID"
-               onChange={(event,newValue) => this.setState({employeeID:newValue})}
-               />
-        </div>
-      );
-
       /*
 
         Need array of Employees with props from Firebase - lat, lng, image, name
@@ -125,12 +102,46 @@ export class Map extends Component {
       // this.setState({employee : this.props.employees});
 
       // getNames(this.props.employes);
+      const style = {
+        width: "640px",
+        height: "480px"
+      }
+
+      const buttonStyle = {
+        backgroundColor: 'transparent',
+        color: 'white'
+      };
+
+      const LeftButtons = (
+        <div>
+          <FlatButton
+            label="Track Employee!"
+            style={buttonStyle}
+            onClick={(event) => this.handleEmployeeSearch(this.state.employeeID)}
+            />
+            <TextField
+               hintText="Employee ID"
+               floatingLabelText="Search Employee ID"
+               onChange={(event,newValue) => this.setState({employeeID:newValue})}
+               />
+        </div>
+      );
+
+      const Markers = this.props.employees
+        .map((employee, index) => {
+          return ( <EmployeeMap
+                  key={employee.empID}
+                  lat={employee.lat}
+                  lng={employee.lng}
+                  img={<img className="icon" src={employee.img} alt="Jane Doe" height="42" width="42"></img>}
+                  />
+        )});
 
       return (
         <div>
           <Mui>
             <AppBar
-              title={<div>Employee: {this.state.employeeName} Location: {this.state.defaultLat}(lat), {this.state.defaultLng}(long)</div>}
+              title={<div>Employee: {this.state.employeeName}, Location: {this.state.defaultLat}(lat), {this.state.defaultLng}(long), {this.state.employeeID}</div>}
               iconElementLeft={LeftButtons}
               />
           </Mui>
@@ -148,16 +159,7 @@ export class Map extends Component {
             size={{width: 640, height: 480}}
             margin={[K_MARGIN_TOP, K_MARGIN_RIGHT, K_MARGIN_BOTTOM, K_MARGIN_LEFT]}
             >
-
-            {this.props.employees
-              .map((employee, index) => {
-                return ( <EmployeeMap key={index}
-                        lat={employee.lat}
-                        lng={employee.lng}
-                        img={<img className="icon" src={employee.img} alt="Jane Doe" height="42" width="42"></img>}
-                        />
-              )})
-            }
+            {Markers}
             </GoogleMap>
         </div>
 

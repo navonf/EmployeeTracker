@@ -170,7 +170,7 @@ class App extends Component {
         {this.state.showRegister ? <Register /> : null}
         {this.state.showEmployeesMap ? <Map employees={this.state.employeez}/> : null}
         {this.state.showEmployeesRegister ? <EmployeeRegister groupNum={this.state.groupNum}/> : null}
-        {this.state.loggedOut ? <center><h1>User {this.state.name} is now logged out</h1></center> : null}
+        {this.state.loggedOut ? <center><h1>User {this.state.name} is now logged out.</h1></center> : null}
         {this.state.needsToSignIn ? <center><h1>Please log in to view this!</h1></center> : null}
       </div>
     );
