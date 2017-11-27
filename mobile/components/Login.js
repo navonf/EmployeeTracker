@@ -3,6 +3,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import fire from './../fire';
+import Camera from 'react-native-camera';
+
 import {
   AppRegistry,
   ToolbarAndroid,
@@ -14,7 +16,9 @@ import {
   Dimensions,
   TextInput,
   Button,
+  ActivityIndicator,
   TouchableOpacity
+
 } from 'react-native';
 
 const { width, height } = Dimensions.get("window");
@@ -30,14 +34,19 @@ export default class Login extends Component {
       password: '',
       failed: false,
       clientName: '',
-      userKey: ''
+      userKey: '',
+      isLoggingIn: false,
+      message: '',
+      cameraPath:''
     }
 
     this.handleLogin = this.handleLogin.bind(this)
   }
 
+
   // This function handles login
-  handleLogin(e) {
+  handleLogin = (e) => {
+    this.setState({isLoggingIn: true});
     e.preventDefault();
     const user = this.state.username;
     const pass = this.state.password;
@@ -57,26 +66,38 @@ export default class Login extends Component {
         const key = snapshot.key;
         const group = snapshot.val().groupNum;
         // the function to trigger in
-        this.props.triggerLogInUpdate(key, group);
+        //this.props.triggerLogInUpdate(key, group);
 
         // pull name from db
         this.setState({clientName : snapshot.val().name});
 
         this.setState({success : true});
         this.setState({failed : false});
+        this.setState({isLoggingIn: false});
+        this.props.onLoginPress();
       }
       else { // login fails
         this.setState({failed : true});
         this.setState({success : false});
+        this.setState({isLoggingIn: false});
+        this.setState({message: "Wrong Username or Password"});
       }
     });
   }
 
+  takePicture() {
+    const options = {};
+    this.camera.capture({metadata: options})
+      .then((data) => this.setState({cameraPath: data.path}))
+
+      .catch(err => console.error(err));
+  }
+
+
   render() {
     return (
       <ScrollView style={{padding: 20}}>
-                <Text
-                    style={{fontSize: 27, justifyContent:'center'}}>
+                <Text style={{fontSize: 27, justifyContent:'center'}}>
                     Employee Tracker: Login
                 </Text>
               <TextInput
@@ -84,20 +105,57 @@ export default class Login extends Component {
                 onChangeText = {(username) => this.setState({username})}
                 value={this.state.username}
               />
-              <Text style={{padding: 10, fontSize: 12, color: 'red'}}>
-                  {this.state.username}
-              </Text>
               <TextInput
                 placeholder="Password"
                 secureTextEntry
                 onChangeText = {(text) => this.setState({password:text})}
               />
+              {!!this.state.message && (
+                    <Text style={{fontSize: 14, color: 'red', padding: 5}}>
+                        {this.state.message}
+                    </Text>
+                )}
+              {this.state.isLoggingIn && <ActivityIndicator />}
+              <Button onPress= {this.handleLogin} title= "Sign In" disabled= {this.state.isLoggingIn || !this.state.username || !this.state.password}/>
+              <View style={styles.container}>
+                  <Camera ref={(cam) => {
+                        this.camera = cam;
+                    }}
+                    style={styles.preview}
+                    aspect={Camera.constants.Aspect.fill}
+                    type = {Camera.constants.Type.front}>
 
-              <Button onPress= {this.handleLogin} title= "Sign In" />
+                    <Text style={styles.capture} onPress={this.takePicture.bind(this)}>[CAPTURE]</Text>
+                </Camera>
+              </View>
+              <Text style={{padding: 100, fontSize: 12, color: 'red'}}>
+-                  {this.state.cameraPath}
+-             </Text>
 
       </ScrollView>
     );
   }
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  preview: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    height: 300,
+    marginTop: 60
+  },
+  capture: {
+    flex: 0,
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    color: '#000',
+    padding: 10,
+    margin: 40
+  }
+});
 
 //export default Login;
