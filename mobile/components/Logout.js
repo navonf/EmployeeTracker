@@ -15,7 +15,7 @@ export default class Secured extends Component {
 
     onLogout = () => {
 
-        const usersRef = fire.database().ref('users');
+        const usersRef = fire.database().ref('employees');
         usersRef.on('child_added', (snapshot) => {
             snapshot.ref.update({loggedIn: 0});
         });
