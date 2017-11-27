@@ -25,7 +25,7 @@ export default class Home extends Component {
   render() {
 
     if (this.state.isLoggedIn)
-      return <Logout username = {this.state.username} onLogoutPress={() => this.setState({isLoggedIn: 0})} />;
+      return <Logout username = {this.state.username} userKey={this.state.userKey} onLogoutPress={() => this.setState({isLoggedIn: 0})} />;
     else
       return <Login updateParentState={this.updateState.bind(this)} onLoginPress={() => this.setState({isLoggedIn: 1})}
         />;
