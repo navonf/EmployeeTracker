@@ -41,12 +41,16 @@ export class Map extends Component {
     empRef
       .on("child_added", (snapshot) => {
         // console.log(snapshot.val().empID);
-        if(snapshot.val().empID === id) {
+        if(snapshot.val().empID === id && snapshot.val().loggedIn === 1 ) {
           lat = snapshot.val().lat;
           lng = snapshot.val().lng;
           name = snapshot.val().name;
 
-        }
+	  } else if (snapshot.val().empID === id && snapshot.val().loggedIn !== 1 ) {
+		  name = id + ' is not logged in!';
+	  } else {
+		  //name = 'Does not exist!';
+	  }
 
     });
 
