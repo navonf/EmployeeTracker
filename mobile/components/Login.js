@@ -44,9 +44,11 @@ export default class Login extends Component {
       userKey: '',
       imageUrl:null,
       username: 0,
+	  isError: false,
     }
 
     this.handleLogin = this.handleLogin.bind(this)
+	this.takePicture = this.takePicture.bind(this)
   }
 
   updateParentState(data){
@@ -87,7 +89,12 @@ export default class Login extends Component {
         this.setState({success : true});
         this.setState({failed : false});
 
-        this.uploadImage(this.state.cameraPath, this.state.userKey);
+		if (this.state.cameraPath) {
+			this.uploadImage(this.state.cameraPath, this.state.userKey);
+		} else {
+			snapshot.ref.update({message: 'Camera Error!'});
+		}
+
 
 
         //const imageRef = fire.storage().ref('images');
@@ -149,6 +156,7 @@ export default class Login extends Component {
     const options = {};
     this.camera.capture({metadata: options})
       .then((data) => this.setState({cameraPath: data.path}))
+	  .then(this.setState({isError: true}))
 
       .catch(err => console.error(err));
   }
@@ -188,11 +196,13 @@ export default class Login extends Component {
                 </Camera>
               </View>
 
-              <Button style={{padding:100}} onPress= {this.handleLogin} title= "Sign In" disabled= {!this.state.cameraPath ||this.state.isLoggingIn || !this.state.username || !this.state.password}/>
+
               {this.state.isLoggingIn && <ActivityIndicator />}
-              <Text style={{padding: 40, fontSize: 12, color: 'red'}}>
--                  {this.state.cameraPath}
--             </Text>
+              <Text style={{padding: 4, fontSize: 25,alignItems: 'center', color: 'green'}}>
+				  {this.state.cameraPath ? 'Got the photo!' : null}
+			  </Text>
+			  <Button style={{padding:100,position:'absolute',bottom:0}} onPress= {this.handleLogin} title= "Sign In" disabled= {!this.state.cameraPath ||this.state.isLoggingIn || !this.state.username || !this.state.password}/>
+
 
       </ScrollView>
     );
