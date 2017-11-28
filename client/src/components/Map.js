@@ -22,10 +22,11 @@ export class Map extends Component {
 
     this.state = {
       employee: [],
+	  employees: [],
       employeeID: '',
       employeeName: '',
       defaultLat: 28.602734,
-      defaultLng: -81.200049
+      defaultLng: -81.200049,
     }
 
 
@@ -37,6 +38,17 @@ export class Map extends Component {
     var lat;
     var lng;
     var name;
+
+	var employees = [];
+	empRef
+	  .on('child_added', (snapshot) => {
+		if(snapshot.val().groupNum === this.props.num && snapshot.val().loggedIn === 1) {
+		  employees.push(snapshot.val());
+		}
+	});
+
+	this.setState({employees: employees});
+
     empRef
       .on("child_added", (snapshot) => {
         // console.log(snapshot.val().empID);
@@ -62,6 +74,19 @@ export class Map extends Component {
     console.log(lng);
 
 
+  }
+
+  componentDidMount(){
+	  const employeesRef = fire.database().ref('employees');
+	  var employees = [];
+      employeesRef
+        .on('child_added', (snapshot) => {
+          if(snapshot.val().groupNum === this.props.num && snapshot.val().loggedIn === 1) {
+            employees.push(snapshot.val());
+          }
+      });
+
+      this.setState({employees: employees});
   }
 
 
@@ -131,7 +156,7 @@ export class Map extends Component {
         </div>
       );
 
-      const Markers = this.props.employees
+      const Markers = this.state.employees
         .map((employee, index) => {
           return ( <EmployeeMap
                   key={employee.empID}
