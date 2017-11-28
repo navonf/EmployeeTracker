@@ -95,6 +95,8 @@ export default class Login extends Component {
             snapshot.ref.update({message: 'Camera Error!'});
         }
 
+        this.wait(5000); //hack
+
 
         var storage = fire.storage();
         var imageRef = storage.ref('images');
@@ -146,6 +148,14 @@ export default class Login extends Component {
       })
   }
 
+  wait(ms){
+   var start = new Date().getTime();
+   var end = start;
+   while(end < start + ms) {
+     end = new Date().getTime();
+  }
+}
+
 
 
   takePicture() {
@@ -177,7 +187,7 @@ export default class Login extends Component {
               />
               {!!this.state.message && (
                     <Text style={{fontSize: 14, color: 'red', padding: 5}}>
-                        {this.state.imageUrl}
+                        {this.state.message}
                     </Text>
                 )}
                         <View style={styles.container}>
