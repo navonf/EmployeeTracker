@@ -25,8 +25,8 @@ export class Map extends Component {
       employee: [],
       employeeID: '',
       employeeName: '',
-      defaultLat: 0,
-      defaultLng: 0
+      defaultLat: 28.602734,
+      defaultLng: -81.200049
     }
 
 
@@ -154,6 +154,10 @@ export class Map extends Component {
             defaultCenter={{
               lat: 28.602734,
               lng: -81.200049
+            }}
+            center={{
+              lat: this.state.defaultLat,
+              lng: this.state.defaultLng
             }}
             zoom={11}
             size={{width: 640, height: 480}}
