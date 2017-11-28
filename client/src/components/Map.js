@@ -137,7 +137,7 @@ export class Map extends Component {
                   key={employee.empID}
                   lat={employee.lat}
                   lng={employee.lng}
-                  img={<img className="icon" src={employee.img} alt="Jane Doe" height="60" width="60"></img>}
+                  img={<img className="icon" src={employee.img} alt="Jane Doe" height="60" width="60 "></img>}
                   />
         )});
 

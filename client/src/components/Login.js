@@ -40,8 +40,9 @@ class Login extends Component {
         const key = snapshot.key;
         const group = snapshot.val().groupNum;
         const name = snapshot.val().name;
+        const companyImage = snapshot.val().companyImage;
         // the function to trigger in
-        this.props.triggerLogInUpdate(key, group, name);
+        this.props.triggerLogInUpdate(key, group, name, companyImage);
 
         // pull name from db
         this.setState({clientName : snapshot.val().name});

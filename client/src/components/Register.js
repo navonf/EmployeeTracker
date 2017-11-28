@@ -25,7 +25,8 @@ class Register extends Component {
       passwordInvalid: false,
       success: false,
       emptyForm: false,
-      isPrivate: false
+      isPrivate: false,
+      companyImage: ''
     }
   }
 
@@ -49,7 +50,8 @@ class Register extends Component {
         user: this.state.username,
         password: this.state.password,
         loggedIn: 0,
-        groupNum: this.state.groupNum
+        groupNum: this.state.groupNum,
+        companyImage: this.state.companyImage
       }
 
       // push current attibutes to firebase
@@ -126,6 +128,12 @@ class Register extends Component {
                 <br/> <br/>
             </div> : null
             }
+            <TextField
+              hintText="Company Image"
+              floatingLabelText="Enter Company Image"
+              onChange = {(event,newValue) => this.setState({companyImage:newValue})}
+              />
+              <br/>
             <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleRegister(event)}/>
          </div>
             {this.state.success ? <h1>Thank you for registering! Please log in.</h1>: null}

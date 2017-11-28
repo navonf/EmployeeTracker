@@ -28,9 +28,11 @@ class App extends Component {
       groupNum: 0,
       needsToSignIn: false,
       loggedOut: false,
+      showImage: false,
       userKey: '',
       employeez: [],
-      name: ''
+      name: '',
+      companyImage: ''
     }
 
     this.updateLogIn = this.updateLogIn.bind(this);
@@ -102,13 +104,15 @@ class App extends Component {
 
 
   // gets the all information needed from the user
-  updateLogIn(key, num, name) {
+  updateLogIn(key, num, name, companyImage) {
 
     this.setState({loggedIn: 1});
     console.log("you passed login!: " + this.state.loggedIn + ", userkey: " + key + ", group num: " + num);
     this.setState({userKey : key});
     this.setState({groupNum : num});
     this.setState({name: name});
+    this.setState({companyImage: companyImage});
+    this.setState({showImage: true});
 
     const employeesRef = fire.database().ref('employees');
     var employees = [];
@@ -172,6 +176,7 @@ class App extends Component {
         {this.state.showEmployeesRegister ? <EmployeeRegister groupNum={this.state.groupNum}/> : null}
         {this.state.loggedOut ? <center><h1>User {this.state.name} is now logged out.</h1></center> : null}
         {this.state.needsToSignIn ? <center><h1>Please log in to view this!</h1></center> : null}
+        {this.state.showImage ? <center><img src={this.state.companyImage}></img></center> : null}
       </div>
     );
   }
