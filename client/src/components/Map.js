@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import GoogleMap from 'google-map-react';
 import Mui from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
-import AutoComplete from 'material-ui/AutoComplete';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import fire from './../fire.js'
@@ -125,8 +124,9 @@ export class Map extends Component {
             />
             <TextField
                hintText="Employee ID"
-               floatingLabelText="Search Employee ID"
+               floatingLabelText="Employee ID"
                onChange={(event,newValue) => this.setState({employeeID:newValue})}
+               style={{width:100}}
                />
         </div>
       );
@@ -137,15 +137,25 @@ export class Map extends Component {
                   key={employee.empID}
                   lat={employee.lat}
                   lng={employee.lng}
-                  img={<img className="icon" src={employee.img} alt="Jane Doe" height="42" width="42"></img>}
+                  img={<img className="icon" src={employee.img} alt="Jane Doe" height="60" width="60"></img>}
                   />
         )});
+
+      var appInfo = (
+        <div>
+          Employee Information -
+          Name: {this.state.employeeName},
+          Latitude: {this.state.defaultLat},
+          Longitude: {this.state.defaultLng},
+          User ID: {this.state.employeeID}
+        </div>
+      );
 
       return (
         <div>
           <Mui>
             <AppBar
-              title={<div>Employee: {this.state.employeeName}, Location: {this.state.defaultLat}(lat), {this.state.defaultLng}(long), {this.state.employeeID}</div>}
+              title={appInfo}
               iconElementLeft={LeftButtons}
               />
           </Mui>
