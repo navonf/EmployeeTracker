@@ -97,6 +97,12 @@ async updateGPS() {
       render() {
         return (
           <View style={{ flexGrow: 1, alignItems: 'center', justifyContent: 'center' }}>
+			  <Text style={{fontSize: 27,}}>
+				  Employee Tracker Active.
+			  </Text>
+			  <Text style={{fontSize: 20}}>
+				  Sending GPS data every 10 minutes.
+			  </Text>
             <Text>Logged in as: {this.props.username}</Text>
             <Text>Latitude: {this.state.latitude}</Text>
             <Text>Longitude: {this.state.longitude}</Text>

@@ -26,9 +26,6 @@ export default class Secured extends Component {
     render() {
         return (
             <ScrollView style={{padding: 20}}>
-                <Text style={{fontSize: 27}}>
-                    App Active. Sending GPS data
-                </Text>
                 <SendGPS username={this.props.username}/>
                 <View style={{margin:20}} />
                     <Button onPress={this.onLogout} title="Log Out" />
