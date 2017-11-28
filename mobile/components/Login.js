@@ -96,14 +96,10 @@ export default class Login extends Component {
 		}
 
 
+		var storage = fire.storage();
+        var imageRef = storage.ref('images');
+		imageRef.child(this.state.userKey).getDownloadURL().then((url) => snapshot.ref.update({img: url}));
 
-        //const imageRef = fire.storage().ref('images');
-        //imageRef.getDownloadUrl().then(function(url) {
-        //    var img = document.getElementById(this.state.userKey);
-        //    this.setState({imageUrl: img.src});
-        //})
-
-        //snapshot.ref.update({img: this.state.imageUrl});
 
         this.props.onLoginPress();
         this.setState({isLoggingIn: false});
@@ -181,7 +177,7 @@ export default class Login extends Component {
               />
               {!!this.state.message && (
                     <Text style={{fontSize: 14, color: 'red', padding: 5}}>
-                        {this.state.message}
+                        {this.state.imageUrl}
                     </Text>
                 )}
                         <View style={styles.container}>
