@@ -61,7 +61,6 @@ class App extends Component {
     this.setState({drawerOpened: false});
     this.setState({showEmployeesMap: false});
     this.setState({needsToSignIn: false});
-    this.setState({loggedOut: false});
     this.setState({showEmployeesRegister: false});
 
     this.setState({startButtons: true});
@@ -129,6 +128,8 @@ class App extends Component {
   signOut() {
     this.setState({loggedIn : 0});
     this.setState({loggedOut: true});
+    this.setState({showImage: false});
+
 
     const usersRef = fire.database().ref('users');
     usersRef
@@ -174,7 +175,7 @@ class App extends Component {
         {this.state.showRegister ? <Register /> : null}
         {this.state.showEmployeesMap ? <Map num={this.state.groupNum} employees={this.state.employeez}/> : null}
         {this.state.showEmployeesRegister ? <EmployeeRegister groupNum={this.state.groupNum}/> : null}
-        {this.state.loggedOut ? <center><h1>User {this.state.name} is now logged out.</h1></center> : null}
+        {this.state.loggedOut ? <center><h1>Admin {this.state.name} is now logged out.</h1></center> : null}
         {this.state.needsToSignIn ? <center><h1>Please log in to view this!</h1></center> : null}
         {this.state.showImage ? <center><img src={this.state.companyImage}></img></center> : null}
       </div>

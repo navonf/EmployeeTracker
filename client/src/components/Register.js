@@ -50,7 +50,7 @@ class Register extends Component {
         user: this.state.username,
         password: this.state.password,
         loggedIn: 0,
-        groupNum: this.state.groupNum,
+        groupNum: parseInt(this.state.groupNum),
         companyImage: this.state.companyImage
       }
 

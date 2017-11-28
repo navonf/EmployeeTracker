@@ -27,6 +27,7 @@ export class Map extends Component {
       employeeName: '',
       defaultLat: 28.602734,
       defaultLng: -81.200049,
+      timestamp: ''
     }
 
 
@@ -38,6 +39,7 @@ export class Map extends Component {
     var lat;
     var lng;
     var name;
+    var time;
 
 	var employees = [];
 	empRef
@@ -56,6 +58,7 @@ export class Map extends Component {
           lat = snapshot.val().lat;
           lng = snapshot.val().lng;
           name = snapshot.val().name;
+          time = snapshot.val().timestamp;
 
 	  } else if (snapshot.val().empID === id && snapshot.val().loggedIn !== 1 ) {
 		  name = id + ' is not logged in!';
@@ -68,10 +71,11 @@ export class Map extends Component {
     // trying to get coordinates to snap to this position
     // when an employee ID is entered.
     this.setState({employeeName: name});
+    this.setState({timestamp: time});
     this.setState({defaultLat: parseFloat(lat)});
     this.setState({defaultLng: parseFloat(lng)});
     console.log(lat);
-    console.log(lng);
+    console.log(lng); console.log(time);
 
 
   }
@@ -172,7 +176,7 @@ export class Map extends Component {
           Name: {this.state.employeeName},
           Latitude: {this.state.defaultLat},
           Longitude: {this.state.defaultLng},
-          User ID: {this.state.employeeID}
+          Last Logon: {this.state.timestamp}
         </div>
       );
 
