@@ -45,7 +45,7 @@ class Login extends Component {
         this.props.triggerLogInUpdate(key, group, name, companyImage);
 
         // pull name from db
-        this.setState({clientName : snapshot.val().name});
+        this.setState({clientName : name});
 
         this.setState({success : true});
         this.setState({failed : false});
