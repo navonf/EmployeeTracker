@@ -29,6 +29,8 @@ export default class SendGPS extends Component {
 
 async updateGPS() {
         //this.setState({message:snaps});
+		var time = Math.floor(Date.now() / 1000);
+		this.setState({timestamp: time});
         const usersRef = fire.database().ref('employees');
         usersRef
           .on('child_changed', (snapshot) => {
@@ -40,8 +42,7 @@ async updateGPS() {
 
             // set loggon attribute to 1, indicating user is logged on
             //snapshot.ref.update({loggedIn: 1});
-            var time = Math.floor(Date.now() / 1000);
-            this.setState({timestamp: time});
+
             if (this.state.latitude != null && this.state.longitude != null) {
                 snapshot.ref.update({lat: this.state.latitude, lng: this.state.longitude});
             }
@@ -76,6 +77,8 @@ async updateGPS() {
     }
 
     componentDidMount() {
+		var time = Math.floor(Date.now() / 1000);
+		this.setState({timestamp: time});
         //var TimerMixin = require('react-timer-mixin');
         navigator.geolocation.getCurrentPosition(
           (position) => {
@@ -106,6 +109,7 @@ async updateGPS() {
             <Text>Logged in as: {this.props.username}</Text>
             <Text>Latitude: {this.state.latitude}</Text>
             <Text>Longitude: {this.state.longitude}</Text>
+			<Text>Timestamp: {this.state.timestamp}</Text>
             {this.state.error ? null : null}
           </View>
         );
