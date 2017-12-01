@@ -10,6 +10,7 @@
 		"axios": "^0.17.1",
 		"firebase": "^4.6.2",
 		"google-map-react": "^0.25.0",
+		"jest-cli": "^21.2.1",
 		"material-ui": "^0.19.4",
 		"react": "16.0.0",
 		"react-dom": "^16.1.1",
@@ -24,8 +25,8 @@
 	"devDependencies": {
 		"babel-jest": "21.2.0",
 		"babel-preset-react-native": "4.0.0",
-		"jest": "21.2.1",
-		"react-test-renderer": "16.0.0"
+		"jest": "^21.2.1",
+		"react-test-renderer": "^16.0.0"
 	},
 	"jest": {
 		"preset": "react-native"

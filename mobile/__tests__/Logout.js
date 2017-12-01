@@ -1,12 +1,16 @@
 import 'react-native';
 import React from 'react';
-import App from '../App';
+import Logout from '../components/Logout';
 
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
 
-it('renders correctly', () => {
+global.navigator = {
+  userAgent: 'node.js'
+};
+
+it('Logout renders correctly', () => {
   const tree = renderer.create(
-    <App />
+    <Logout />
   );
 });
